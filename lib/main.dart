@@ -44,7 +44,7 @@ class BreadCrumb {
 
 class BreadCrumbProvider extends ChangeNotifier {
   final List<BreadCrumb> _items = [];
-  UnmodifiableListView<BreadCrumb> get item => UnmodifiableListView(_items);
+  UnmodifiableListView<BreadCrumb> get iitem => UnmodifiableListView(_items);
 
   void addBreadCrumb(BreadCrumb breadCrumb) {
     for (final item in _items) {
@@ -57,6 +57,26 @@ class BreadCrumbProvider extends ChangeNotifier {
   void removeBreadCrumb() {
     _items.clear();
     notifyListeners();
+  }
+}
+
+class BreadCrumbWidget extends StatelessWidget {
+  final UnmodifiableListView<BreadCrumb> breadCrumb;
+  const BreadCrumbWidget({super.key, required this.breadCrumb});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: breadCrumb.map(
+        (breadCrumb) {
+          return Text(
+            breadCrumb.title,
+            style: TextStyle(
+                color: breadCrumb.isActive ? Colors.blue : Colors.grey),
+          );
+        },
+      ).toList(),
+    );
   }
 }
 
